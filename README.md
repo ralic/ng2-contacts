@@ -2,6 +2,29 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
 
+An Angular2 frontend for the ng2-contacts-server
+
+This is an Eclipse project.
+
+To run it, you will need to start the ng2-contacts-server first.
+
+---------------
+To debug the project using Chrome ...
+
+Then cd to the ng2-contacts directory at a command line.
+
+Using Angular CLI ... 
+
+ng serve
+
+Chrome should startup with the URL ...
+
+http://localhost:4200/contacts
+
+Then Open the Developer tools for debugging.
+
+A screenshot of the running app is provided.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
