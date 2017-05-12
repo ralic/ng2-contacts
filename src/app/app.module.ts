@@ -16,6 +16,8 @@ import { TablePagination } from './table/table';
 import { TableElementsCount } from './table/table';
 import { TableSort } from './table/table';
 import { ContactComponent } from './contact/contact.component';
+import { GroupComponent } from './group/group.component';
+import { GroupListComponent } from './group-list/group-list.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { ContactComponent } from './contact/contact.component';
     TableElementsCount,
     TablePagination,
     TableSort,
-    ContactComponent
+    ContactComponent,
+    GroupComponent,
+    GroupListComponent
   ],
   imports: [
     BrowserModule,

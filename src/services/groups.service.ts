@@ -1,0 +1,173 @@
+import { Injectable } from '@angular/core';
+import { Http, Response, RequestOptions, Headers, URLSearchParams } from '@angular/http';
+import { Observable } from 'rxjs/Rx';
+import * as Rx from 'rxjs/Rx';
+import { webServiceEndpoint } from '../app/common/constants';
+import { Group } from '../models/group';
+import { PaginationPage, PaginationPropertySort } from '../app/common/pagination';
+
+class ServerObj {
+  constructor(public resource: any) {
+  }
+};
+
+@Injectable()
+export class GroupService {
+
+  constructor(private httpService: Http) {
+
+  };
+
+  findGroups(page: number, pageSize: number, sort: PaginationPropertySort): Rx.Observable<any> {
+    const params: any = { page: page, size: pageSize };
+    if (sort != null) {
+      params.sort = sort.property + ',' + sort.direction;
+    }
+    return <Rx.Observable<PaginationPage<any>>>Rx.Observable.fromPromise(
+      this.httpService
+        .get(webServiceEndpoint + '/group', { search: params })
+        .map(res => res.json())
+        .toPromise()
+    ).publish().refCount();
+  };
+
+  searchGroups(name: string, page: number, pageSize: number, sort: PaginationPropertySort): Rx.Observable<any> {
+
+    const params: any = { size: pageSize, page: page };
+    if (sort != null) {
+      params.sort = sort.property + ',' + sort.direction;
+    }
+    return <Rx.Observable<PaginationPage<any>>>Rx.Observable.fromPromise(
+      this.httpService
+        .get(webServiceEndpoint + '/group/search/' + name, { search: params })
+        .map(res => res.json())
+        .toPromise()
+    ).publish().refCount();
+  }
+
+  query(params?: URLSearchParams): Observable<Group[]> {
+    return this.httpService
+      .get(webServiceEndpoint, { search: params })
+      .map((response) => {
+        const result: any = response.json();
+        const groups: Array<Group> = [];
+        result.content.forEach((group) => {
+          console.log(group.lastName);
+          const newGroup = new Group(
+            group.id,
+            group.groupName,
+            group.groupDescription
+          );
+          groups.push(newGroup);
+        });
+        return groups;
+      });
+  };
+  /*
+    getAll(): Observable<Group[]> {
+      let groups$ = this.http
+        .get(`${this.baseUrl}/group`, { headers: this.getHeaders() })
+        .map(mapGroups)
+        .catch(handleError);
+      return groups$;
+    }
+  */
+
+  get(id: number): Observable<Group> {
+    const group$ = this.httpService
+      .get(`${webServiceEndpoint}/group/${id}`, { headers: this.getHeaders() })
+      .map(mapGroup);
+    return group$;
+  };
+
+  /*
+    save(group: Group): Observable<Response> {
+      return this.httpService
+        .put(`${this.webServiceEndpoint}/group/${group.id}`, JSON.stringify(group), { headers: this.getHeaders() });
+    }
+  */
+
+  save(group: Group) {
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    if (group.groupId) {
+      return this.httpService.put(webServiceEndpoint + '/group/', groupToJson(group), {
+        headers: headers
+      })
+        .map((data) => {
+          return data;
+        });
+    } else {
+      return this.httpService.post(webServiceEndpoint + '/group/', groupToJson(group),
+        {
+          headers: headers
+        })
+        .map((data) => {
+          return data;
+        });
+    }
+  }
+
+  remove(id: string) {
+    return this.httpService
+      .delete(webServiceEndpoint + '/group/' + id)
+      .map((response) => {
+        const result: any = response.json();
+        return result.id;
+      });
+  }
+
+  private getHeaders() {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    return headers;
+  }
+}
+
+function mapGroups(response: Response): Group[] {
+  // uncomment to simulate error:
+  // throw new Error('ups! Force choke!');
+
+  // The response of the API has a content
+  // property with the actual results
+  return response.json().content.map(toGroup);
+}
+
+function toGroup(r: any): Group {
+  const group = <Group>({
+    groupId: r.groupId,
+    groupName: r.groupName,
+    groupDescription: r.groupDescription
+  });
+  console.log('Parsed group:', group);
+  return group;
+}
+
+function mapGroup(response: Response): Group {
+  return toGroup(response.json());
+}
+
+// this could also be a private method of the component class
+function handleError(error: any) {
+  // log error
+  // could be something more sophisticated
+  const errorMsg = error.message || `Yikes! There was was a problem and we couldn't retrieve your data!`;
+  console.error(errorMsg);
+
+  // throw an application level error
+  return Observable.throw(errorMsg);
+}
+
+function
+  groupToJson(group: Group) {
+  const doc = {
+    groupId: group.groupId,
+    groupName: group.groupName,
+    groupDescription: group.groupDescription
+  };
+
+  //    return stringify ? JSON.stringify({ resource: [doc] }) : doc;
+  return JSON.stringify(doc);
+}
+

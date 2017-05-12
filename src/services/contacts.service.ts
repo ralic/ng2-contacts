@@ -13,14 +13,13 @@ class ServerObj {
 
 @Injectable()
 export class ContactService {
-//  private baseResourceUrl = 'http://localhost:8080/ng2-contacts-server/api';
 
   constructor(private httpService: Http) {
 
   };
 
   findContacts(page: number, pageSize: number, sort: PaginationPropertySort): Rx.Observable<any> {
-    const params: any = { page: page, size: pageSize };
+    const params: any = { page: page, size: pageSize, headers: this.getHeaders() };
     if (sort != null) {
       params.sort = sort.property + ',' + sort.direction;
     }
@@ -99,14 +98,14 @@ export class ContactService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     if (contact.id) {
-      return this.httpService.put(webServiceEndpoint + '/contact/', toJson(contact), {
+      return this.httpService.put(webServiceEndpoint + '/contact/', contactToJson(contact), {
         headers: headers
       })
         .map((data) => {
           return data;
         });
     } else {
-      return this.httpService.post(webServiceEndpoint + '/contact/', toJson(contact),
+      return this.httpService.post(webServiceEndpoint + '/contact/', contactToJson(contact),
         {
           headers: headers
         })
@@ -128,6 +127,7 @@ export class ContactService {
   private getHeaders() {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
+    
     return headers;
   }
 }
@@ -173,7 +173,7 @@ function handleError(error: any) {
 }
 
 function
-  toJson(contact: Contact) {
+  contactToJson(contact: Contact) {
   const doc = {
     id: contact.id,
     firstName: contact.firstName,

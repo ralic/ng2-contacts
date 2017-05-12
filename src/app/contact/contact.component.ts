@@ -1,18 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-//import {FORM_DIRECTIVES, FormBuilder, Validators, Control, ControlGroup} from '@angular/common';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { URLSearchParams } from '@angular/http';
-
 import { Contact } from '../../models/contact';
-//import {ContactGroup} from '../../models/contact-group';
-//import {Group} from '../../models/group';
 import { ContactService } from '../../services/contacts.service';
-//import {ContactGroupService} from '../../services/contact-group';
-//import {GroupService} from '../../services/group';
 import { BaseHttpService } from '../../services/base-http';
 import * as constants from '../common/constants';
-//import {ContactInfoListCmp} from '../contact-info/contact-info-list';
 
 @Component({
   selector: 'app-contact',
@@ -22,30 +15,18 @@ import * as constants from '../common/constants';
 })
 export class ContactComponent {
   form: FormGroup;
-  
-  id:number;
-  firstName:string;
-  lastName:string;
-  title:string;
-  company:string;
-  imageURL:string;
-  skype:string;
-  twitter:string;
 
-  selectedGroupId: string = null;  
-
-/*
-  id = new FormControl('');
-  firstName = new FormControl('', Validators.required);
-  lastName = new FormControl('', Validators.required);
-  title = new FormControl('');
-  company = new FormControl('');
-  imageUrl = new FormControl('');
-  skype = new FormControl('');
-  twitter = new FormControl('');
+  id: number;
+  firstName: string;
+  lastName: string;
+  title: string;
+  company: string;
+  imageURL: string;
+  skype: string;
+  twitter: string;
 
   selectedGroupId: string = null;
-*/
+
   contact: Contact = new Contact(
   '',
   );
