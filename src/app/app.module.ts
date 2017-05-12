@@ -18,6 +18,7 @@ import { TableSort } from './table/table';
 import { ContactComponent } from './contact/contact.component';
 import { GroupComponent } from './group/group.component';
 import { GroupListComponent } from './group-list/group-list.component';
+import { GroupMembersComponent } from './group-members/group-members.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { GroupListComponent } from './group-list/group-list.component';
     TableSort,
     ContactComponent,
     GroupComponent,
-    GroupListComponent
+    GroupListComponent,
+    GroupMembersComponent
   ],
   imports: [
     BrowserModule,

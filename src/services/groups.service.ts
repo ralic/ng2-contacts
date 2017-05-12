@@ -31,6 +31,19 @@ export class GroupService {
     ).publish().refCount();
   };
 
+  findGroupMembers(groupId: string, page: number, pageSize: number, sort: PaginationPropertySort): Rx.Observable<any> {
+    const params: any = { page: page, size: pageSize };
+    if (sort != null) {
+      params.sort = sort.property + ',' + sort.direction;
+    }
+    return <Rx.Observable<PaginationPage<any>>>Rx.Observable.fromPromise(
+      this.httpService
+        .get(webServiceEndpoint + '/group/member/' + groupId, { search: params })
+        .map(res => res.json())
+        .toPromise()
+    ).publish().refCount();
+  };
+    
   searchGroups(name: string, page: number, pageSize: number, sort: PaginationPropertySort): Rx.Observable<any> {
 
     const params: any = { size: pageSize, page: page };

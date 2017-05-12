@@ -32,13 +32,14 @@ export class GroupComponent {
   //  constructor (private groupService: GroupService, private groupService: GroupService, private groupGroupService: GroupGroupService, private router:Router, private params: RouteParams, private formBuilder: FormBuilder, private httpService: BaseHttpService) {
   constructor(private groupService: GroupService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private httpService: BaseHttpService) {
 
-    route.params.subscribe(params => {this.id = params['id']; });
-
-    if (this.id) {
+    route.params.subscribe(params => {this.id = params['groupId']; });
+    this.selectedGroupId = route.snapshot.params['id']
+    
+    if (this.selectedGroupId) {
       const self = this;
       const groupGroupParams = new URLSearchParams();
 //      groupGroupParams.set('filter', 'group_id=' + id);
-      let passedId = Number(this.id); 
+      let passedId = Number(this.selectedGroupId); 
       groupService
         .get(passedId)
         .subscribe((group) => self.group = group);
