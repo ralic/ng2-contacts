@@ -43,9 +43,8 @@ export class GroupService {
         .toPromise()
     ).publish().refCount();
   };
-    
-  searchGroups(name: string, page: number, pageSize: number, sort: PaginationPropertySort): Rx.Observable<any> {
 
+  searchGroups(name: string, page: number, pageSize: number, sort: PaginationPropertySort): Rx.Observable<any> {
     const params: any = { size: pageSize, page: page };
     if (sort != null) {
       params.sort = sort.property + ',' + sort.direction;
@@ -93,13 +92,6 @@ export class GroupService {
     return group$;
   };
 
-  /*
-    save(group: Group): Observable<Response> {
-      return this.httpService
-        .put(`${this.webServiceEndpoint}/group/${group.id}`, JSON.stringify(group), { headers: this.getHeaders() });
-    }
-  */
-
   save(group: Group) {
 
     const headers = new Headers();
@@ -122,7 +114,18 @@ export class GroupService {
     }
   }
 
-  remove(id: string) {
+  addGroupMember(groupId: string, contactId: string) {
+    console.log('Adding Group Member: ' + 'Group Id:' + groupId + ' Contact Id:' + contactId);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const test = webServiceEndpoint + '/group/member/' + groupId + '/' + contactId;
+    return this.httpService.post(webServiceEndpoint + '/group/member/' + groupId + '/' + contactId,
+      {
+        headers: headers
+      });
+  }
+
+  removeGroup(id: string) {
     return this.httpService
       .delete(webServiceEndpoint + '/group/' + id)
       .map((response) => {
@@ -131,6 +134,14 @@ export class GroupService {
       });
   }
 
+  removeGroupMember(id: string) {
+    return this.httpService
+      .delete(webServiceEndpoint + '/group/member/' + id)
+      .map((response) => {
+        const result: any = response.json();
+        return result.id;
+      });
+  }
   private getHeaders() {
     const headers = new Headers();
     headers.append('Accept', 'application/json');

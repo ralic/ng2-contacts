@@ -72,7 +72,7 @@ export class GroupListComponent implements Table {
   };
 
   delete(group) {
-    const observable: Rx.Observable<string> = this.groupService.remove(group.id);
+    const observable: Rx.Observable<string> = this.groupService.removeGroup(group.id);
     showLoading();
     observable.switchMap(() => {
       return this.fetchPage(this.pageNumber, defaultItemsCountPerPage, null);

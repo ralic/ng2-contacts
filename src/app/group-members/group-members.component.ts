@@ -18,7 +18,7 @@ import { BaseHttpService } from '../../services/base-http';
   providers: [GroupService, BaseHttpService]
 
 })
-export class GroupMembersComponent implements OnInit {
+export class GroupMembersComponent implements Table {
   public members: GroupMember[] = [];
 
   memberPage: any;
@@ -27,12 +27,11 @@ export class GroupMembersComponent implements OnInit {
   groupId: string;
 
   constructor(private groupService: GroupService, @Inject(Router) private router: Router, private route: ActivatedRoute) {
-    this.groupId = route.snapshot.params['id']
+    this.groupId = route.snapshot.params['id'];
   }
 
   ngOnInit() {
-
-    const observable: Rx.Observable<PaginationPage<any>> = this.fetchPage(this.groupId, 0, defaultItemsCountPerPage, null);
+    const observable: Rx.Observable<PaginationPage<any>> = this.fetchPage(0, defaultItemsCountPerPage, null);
     showLoading();
     observable.subscribe(() => {
     }, hideLoading, hideLoading);
@@ -40,14 +39,24 @@ export class GroupMembersComponent implements OnInit {
 
   }
 
-  fetchPage(groupId: string, pageNumber: number, pageSize: number, sort: PaginationPropertySort): Rx.Observable<PaginationPage<any>> {
+  fetchPage(pageNumber: number, pageSize: number, sort: PaginationPropertySort): Rx.Observable<PaginationPage<any>> {
     this.pageNumber = pageNumber;
     const observable: Rx.Observable<PaginationPage<any>> = this.groupService.findGroupMembers(this.groupId, pageNumber, pageSize, sort);
     observable.subscribe(memberPage => this.memberPage = memberPage);
     return observable;
   }
-  
+
   show(contact) {
     this.router.navigate(['/contact', contact.contactId]);
+  }
+  
+  delete(member) {
+    const observable: Rx.Observable<string> = this.groupService.removeGroupMember(member.id);
+    showLoading();
+    observable.switchMap(() => {
+      return this.fetchPage(this.pageNumber, defaultItemsCountPerPage, null);
+    }).subscribe(r => {
+      this.fetchPage(this.pageNumber, defaultItemsCountPerPage, null);
+    }, hideLoading, hideLoading);
   }
 }

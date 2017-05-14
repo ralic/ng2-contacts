@@ -19,6 +19,7 @@ import { ContactComponent } from './contact/contact.component';
 import { GroupComponent } from './group/group.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { GroupMembersComponent } from './group-members/group-members.component';
+import { GroupMemberSelectorComponent } from './group-member-selector/group-member-selector.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { GroupMembersComponent } from './group-members/group-members.component';
     ContactComponent,
     GroupComponent,
     GroupListComponent,
-    GroupMembersComponent
+    GroupMembersComponent,
+    GroupMemberSelectorComponent
   ],
   imports: [
     BrowserModule,
