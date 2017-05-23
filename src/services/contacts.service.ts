@@ -69,15 +69,6 @@ export class ContactService {
         return contacts;
       });
   };
-  /*
-    getAll(): Observable<Contact[]> {
-      let contacts$ = this.http
-        .get(`${this.baseUrl}/contact`, { headers: this.getHeaders() })
-        .map(mapContacts)
-        .catch(handleError);
-      return contacts$;
-    }
-  */
 
   get(id: number): Observable<Contact> {
     const contact$ = this.httpService
@@ -85,13 +76,6 @@ export class ContactService {
       .map(mapContact);
     return contact$;
   };
-
-  /*
-    save(contact: Contact): Observable<Response> {
-      return this.httpService
-        .put(`${this.webServiceEndpoint}/contact/${contact.id}`, JSON.stringify(contact), { headers: this.getHeaders() });
-    }
-  */
 
   save(contact: Contact) {
 
@@ -127,7 +111,7 @@ export class ContactService {
   private getHeaders() {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
-    
+
     return headers;
   }
 }

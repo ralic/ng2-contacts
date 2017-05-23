@@ -5,9 +5,19 @@ import { ContactListComponent } from './contact-list/contact-list.component';
 import { ContactComponent } from './contact/contact.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { GroupComponent } from './group/group.component';
+import { LoginComponent } from './login/login.component';
+import { Users } from './users/users';
+import { User } from './users/user';
 
 // Route config let's you map routes to components
 const routes: Routes = [
+  { path: 'authenticate', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'logout', component: LoginComponent },
+  { path: 'users', component: Users, },
+  { path: 'user/:id', component: User, },
+  { path: '', component: AboutComponent },
+
   // map '/home' to the home component
   {
     path: 'home',
@@ -47,13 +57,14 @@ const routes: Routes = [
   {
     path: 'group',
     component: GroupComponent
-  },
+  }
+  /* ,
   // map '/' to '/contacts' as our default route
   {
     path: '',
     redirectTo: '/contacts',
     pathMatch: 'full'
-  },
+  },*/
 ];
 
 export const routing = RouterModule.forRoot(routes);
