@@ -23,9 +23,11 @@ import { AccountEventsService } from '../services/account.events.service';
 import { Users } from './users/users';
 import { User } from './users/user';
 import * as AppUtils from '../app/utils/app.utils';
-import { IsAuthorized } from '../app/utils/is-authorized.directive';
+//import { IsAuthorized } from '../app/utils/is-authorized.directive';
+import { UtilsModule } from '../app/utils/utils.module';
 
 @NgModule({
+
   declarations: [
     AppComponent,
     AboutComponent,
@@ -42,33 +44,38 @@ import { IsAuthorized } from '../app/utils/is-authorized.directive';
     AccountComponent,
     LoginComponent,
     Users,
-    User,
-    IsAuthorized
+    User
+    // ,
+    // IsAuthorized
   ],
   imports: [
     BrowserModule,
     routing,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule
+    HttpModule,
+    UtilsModule
   ],
-  providers: [AccountEventsService, LoginService,
-        {
-            provide: Http,
+/*
+  providers: [AccountEventsService, LoginService, HmacHttpClient,
+    {
+      provide: Http,
 
-            useFactory: (xhrBackend: XHRBackend, requestOptions: RequestOptions, accountEventService: AccountEventsService) => {
-               return myHttpClient(xhrBackend, requestOptions, accountEventService);
-            },
+      useFactory: (xhrBackend: XHRBackend, requestOptions: RequestOptions, accountEventService: AccountEventsService) => {
 
-            deps: [XHRBackend, RequestOptions, AccountEventsService],
-            multi: false
-        }
+        return myHttpClient(xhrBackend, requestOptions, accountEventService);
+      },
+
+      deps: [XHRBackend, RequestOptions, AccountEventsService],
+      multi: false
+    }
   ],
+*/
   bootstrap: [AppComponent]
 })
 
 export class AppModule { }
 
-function myHttpClient (xhrBackend: XHRBackend, requestOptions: RequestOptions, accountEventService: AccountEventsService) {
-               return new HmacHttpClient(xhrBackend, requestOptions, accountEventService);
-            };
+export function myHttpClient(xhrBackend: XHRBackend, requestOptions: RequestOptions, accountEventService: AccountEventsService) {
+  return new HmacHttpClient(xhrBackend, requestOptions, accountEventService);
+};

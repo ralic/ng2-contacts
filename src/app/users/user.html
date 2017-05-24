@@ -11,8 +11,11 @@
                     <option *ngFor="let profile of profiles" [value]="profile">{{profile}}</option>
                 </select>
             </div>
-            <div>
+            <div><!--
                 <button type="submit" is-authorized="ROLE_MANAGER" class="btn btn-primary" [disabled]="userForm.$invalid"><span class="fa fa-save"></span>Save</button>
+                -->
+                <button type="submit" is-authorized="ROLE_MANAGER" class="btn btn-primary"><span class="fa fa-save"></span>Save</button>
+
                 <button type="button" class="btn btn-default" (click)="cancel()"><span class="fa fa-save"></span>Cancel</button>
             </div>
         </form>

@@ -4,22 +4,22 @@ import { GroupService } from '../services/groups.service';
 import { LoginService } from '../services/login.service';
 import { Router } from '@angular/router';
 import { Event } from '@angular/router';
+import { AccountEventsService } from '../services/account.events.service';
+import { HmacHttpClient } from './utils/hmac-http-client';
+import { IsAuthorized } from '../app/utils/is-authorized.directive';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [ContactService, GroupService]
+  providers: [ContactService, GroupService, AccountEventsService, LoginService, HmacHttpClient]
 })
 
 export class AppComponent {
-
-//  authenticated: boolean;
   loginService: LoginService;
   constructor(router: Router, loginService: LoginService) {
     const self = this;
     this.loginService = loginService;
-//    this.authenticated = loginService.isAuthenticated();
 
     router.events.subscribe(function(e: any) {
 
